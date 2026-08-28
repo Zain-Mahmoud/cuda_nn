@@ -13,7 +13,6 @@ void relu_gpu(const DeviceMatrix& X, DeviceMatrix& Y){
 
 }
 
-
 void matmul_gpu(const DeviceMatrix &out, DeviceMatrix& left, const DeviceMatrix& right){
     int total_threads = left.rows * right.cols;
 
@@ -27,9 +26,3 @@ void matmul_gpu(const DeviceMatrix &out, DeviceMatrix& left, const DeviceMatrix&
     naive_matmul_kernel<<blocks_per_grid, threads_per_block>>(out.data, left.data, right.data, M, K, N);
 }
 
-int main(){
-
-
-
-
-}

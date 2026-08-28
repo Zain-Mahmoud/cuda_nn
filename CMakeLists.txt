@@ -9,7 +9,7 @@ project(
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-Use CUDA C++17 as well
+#Use CUDA C++17 as well
 set(CMAKE_CUDA_STANDARD 17)
 set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 
@@ -22,7 +22,7 @@ add_executable(cuda_nn
     src/matrix.cpp
     src/linear.cpp
     src/relu.cpp
-    
+
 
     src/cuda/device_matrix.cu
     src/cuda/relu.cu

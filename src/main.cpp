@@ -63,6 +63,6 @@ int main(){
     relu_gpu(dX, dY);
     dY.copy_to_host(Y);
 
-    mat_print(Y)
+    mat_print(Y);
 
 }

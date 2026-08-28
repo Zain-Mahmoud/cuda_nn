@@ -2,20 +2,20 @@ cmake_minimum_required(VERSION 3.20)
 
 project(
     cuda_nn
-    LANGUAGES CXX 
+    LANGUAGES CXX CUDA
 )
 
 # Use C++17
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Use CUDA C++17 as well
-# set(CMAKE_CUDA_STANDARD 17)
-# set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+Use CUDA C++17 as well
+set(CMAKE_CUDA_STANDARD 17)
+set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 
 # Nice default while developing
 set(CMAKE_CXX_EXTENSIONS OFF)
-# set(CMAKE_CUDA_EXTENSIONS OFF)
+set(CMAKE_CUDA_EXTENSIONS OFF)
 
 add_executable(cuda_nn
     src/main.cpp
@@ -34,6 +34,6 @@ target_include_directories(cuda_nn PRIVATE
 )
 
 # # Let CMake know this target contains CUDA code
-# set_target_properties(cuda_nn PROPERTIES
-#     CUDA_SEPARABLE_COMPILATION ON
-# )
+set_target_properties(cuda_nn PROPERTIES
+    CUDA_SEPARABLE_COMPILATION ON
+)

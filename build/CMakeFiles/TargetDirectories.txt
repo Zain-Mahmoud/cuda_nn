@@ -1,0 +1,3 @@
+/Users/zain/cuda_nn/build/CMakeFiles/cuda_nn.dir
+/Users/zain/cuda_nn/build/CMakeFiles/edit_cache.dir
+/Users/zain/cuda_nn/build/CMakeFiles/rebuild_cache.dir

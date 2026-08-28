@@ -1,5 +1,4 @@
-#include <device_matrix.hpp>
-__global__ void naive_matmul(float *out, float *left, float *right, int M, int K, int N){
+__global__ void naive_matmul_kernel(float *out, float *left, float *right, int M, int K, int N){
     int idx = blockDim.x * blockIdx.x + threadIdx.x;
 
     if (idx > M * N - 1){

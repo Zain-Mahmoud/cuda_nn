@@ -1,4 +1,4 @@
-__global__ void relu(float *out, float *in, int N){
+__global__ void relu_kernel(float *out, float *in, int N){
     int i = threadIdx.x + blockIdx.x * blockDim.x
 
     if (i > N){

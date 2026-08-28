@@ -1,22 +1,68 @@
 #include <iostream>
 #include <matrix.hpp>
+#include <device_matrix.hpp>
+#include <ops.cuh>
 #include <linear.hpp>
 #include <relu.hpp>
+
 using namespace std;
 
-int main(){
-
-    Matrix m(2, 2);
-    m(0, 0)=1;
-    m(0,1)=0.5;
-    m(1,0)=-100;
-    m(1,1)=20;
-    Matrix *C = relu_cpu(&m);
-
-    for (int i = 0; i < 2; i++){
-        for (int j = 0; j < 2; j++){
-            cout << (*C)(i,j) << endl;
+void fill(Matrix &X, float val){
+    for (int i = 0; i < X.rows; i++){
+        for (int j = 0; j < X.cols; j++){
+            X.data[i * X.cols + j] = val;
         }
     }
-    return 0;
+}
+
+void fill_alternating(Matrix &X, float val){
+
+    for (int i = 0; i < X.rows; i++){
+        for (int j = 0; j < X.cols; j++){
+            val *= -1;
+            X.data[i * X.cols + j] = val;
+        }
+    }
+}
+
+void mat_print(Matrix &X){
+
+    for (int i = 0; i < X.rows; i++){
+        for (int j = 0; j < X.cols; j++){
+            cout << X.data[i * X.cols + j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+
+int main(){
+    Matrix A(2,3); // initialize 2x3 matrix
+    Matrix B(3,4);  // initialize 3x4 matrix
+
+    Matrix X(2, 2); // initialize 2x2 matrix
+    Matrix Y(2, 2); // initialize 2x2 matrix
+
+    fill(A, 5); // fill with 5s
+    fill(B, 6); // fill with 6s
+
+    fill_alternating(X, 3); // fill with 3, -3, 3, -3 etc
+
+
+    //initialize device matrices
+    DeviceMatrix dA(2,3); 
+    DeviceMatrix dB(3,4);
+    DeviceMatrix dX(2, 2);
+    DeviceMatrix dY(2,2);
+
+    // copy values
+    dA.copy_to_host(A);
+    dB.copy_to_host(B);
+    dX.copy_to_host(X);
+
+    relu_gpu(dX, dY);
+    dY.copy_to_host(Y);
+
+    mat_print(Y)
+
 }

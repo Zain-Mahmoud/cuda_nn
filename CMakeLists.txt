@@ -22,6 +22,7 @@ add_executable(cuda_nn
     src/matrix.cpp
     src/linear.cpp
     src/relu.cpp
+    
 
     src/cuda/device_matrix.cu
     src/cuda/relu.cu

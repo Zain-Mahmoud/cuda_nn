@@ -47,7 +47,7 @@ int main(){
     fill(B, 6); // fill with 6s
 
     fill_alternating(X, 3); // fill with 3, -3, 3, -3 etc
-
+    mat_print(X);
 
     //initialize device matrices
     DeviceMatrix dA(2,3); 
@@ -55,10 +55,10 @@ int main(){
     DeviceMatrix dX(2, 2);
     DeviceMatrix dY(2,2);
 
-    // copy values
-    dA.copy_to_host(A);
-    dB.copy_to_host(B);
-    dX.copy_to_host(X);
+    // copy values to device matrices
+    dA.copy_to_device(A);
+    dB.copy_to_device(B);
+    dX.copy_to_device(X);
 
     relu_gpu(dX, dY);
     dY.copy_to_host(Y);

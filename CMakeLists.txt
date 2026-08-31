@@ -27,6 +27,7 @@ add_executable(cuda_nn
     src/cuda/device_matrix.cu
     src/cuda/relu.cu
     src/cuda/matmul_naive.cu
+    src/cuda/ops.cu
 )
 
 # Add header directory

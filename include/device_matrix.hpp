@@ -10,7 +10,7 @@ class DeviceMatrix{
         ~DeviceMatrix();
 
         void copy_to_host(const Matrix&);
-        void copy_from_host(const Matrix&);
+        void copy_to_device(const Matrix&);
 
 };
 #endif

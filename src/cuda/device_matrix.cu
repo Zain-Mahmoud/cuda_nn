@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <cuda_runtime.h>
 #include <matrix.hpp>
+#include <iostream>
 using namespace std;
 
 DeviceMatrix::DeviceMatrix(int rows, int cols){
@@ -26,7 +27,7 @@ DeviceMatrix::~DeviceMatrix(){
 }
 
 void DeviceMatrix::copy_to_host(const Matrix &m){
-    cudaError_t err = cudaMemcpy(data, m.data, rows * cols * sizeof(float), cudaMemcpyDeviceToHost);
+    cudaError_t err = cudaMemcpy(m.data, data, rows * cols * sizeof(float), cudaMemcpyDeviceToHost);
     if (err != cudaSuccess){
         cerr << "cudaMemcpy copy_to_host failed: "
          << cudaGetErrorString(err) << endl;
@@ -34,7 +35,7 @@ void DeviceMatrix::copy_to_host(const Matrix &m){
 }
 
 void DeviceMatrix::copy_to_device(const Matrix &m){
-    cudaError_t err = cudaMemcpy(m.data, data, rows * cols * sizeof(float), cudaMemcpyHostToDevice);
+    cudaError_t err = cudaMemcpy(data, m.data, rows * cols * sizeof(float), cudaMemcpyHostToDevice);
 
     if (err != cudaSuccess){
         cerr << "cudaMemcpy copy_to_host failed: "

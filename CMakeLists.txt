@@ -23,11 +23,12 @@ add_executable(cuda_nn
     src/linear.cpp
     src/relu.cpp
 
-
     src/cuda/device_matrix.cu
-    src/cuda/relu.cu
-    src/cuda/matmul_naive.cu
     src/cuda/ops.cu
+
+    src/cuda/kernel/relu.cu
+    src/cuda/kernel/matmul.cu
+    
 )
 
 # Add header directory

@@ -10,3 +10,15 @@ __global__ void relu_kernel(float *out, float *in, int N){
         out[i] = 0.0f;
     }
 }
+__global__ void relu_grad_kernel(float *out, float *in, int N){
+    
+    if (i >= N){
+        return;
+    }
+    if (in[i] > 0){
+        out[i] = 1.0f;
+    } else {
+        out[i] = 0.0f;
+    }
+
+}

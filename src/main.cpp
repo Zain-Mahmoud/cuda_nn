@@ -39,6 +39,7 @@ void mat_print(Matrix &X){
 int main(){
     Matrix A(2,3); // initialize 2x3 matrix
     Matrix B(3,4);  // initialize 3x4 matrix
+    Matrix C(2, 4);
 
     Matrix X(2, 2); // initialize 2x2 matrix
     Matrix Y(2, 2); // initialize 2x2 matrix
@@ -52,6 +53,8 @@ int main(){
     //initialize device matrices
     DeviceMatrix dA(2,3); 
     DeviceMatrix dB(3,4);
+    DeviceMatrix dC(2, 4);
+    
     DeviceMatrix dX(2, 2);
     DeviceMatrix dY(2,2);
 
@@ -62,6 +65,9 @@ int main(){
 
     relu_gpu(dX, dY);
     dY.copy_to_host(Y);
+
+    matmul_gpu(dC, dA, dB);
+    dC.copy_to_host(C);
 
     mat_print(Y);
 

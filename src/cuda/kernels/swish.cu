@@ -1,6 +1,6 @@
 #include <cmath>
 using namespace std;
-float stable_sigmoid(float x) {
+__device__ float stable_sigmoid(float x) {
     if (x >= 0) {
         float z = expf(-x);
         return 1.0 / (1.0 + z);

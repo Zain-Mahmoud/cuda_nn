@@ -151,6 +151,7 @@ void softmax_grad_gpu(DeviceMatrix &X, DeviceMatrix &Y){
         return;
     }
     int threads = 256;
+    int total = size * size;
     int blocks = (total + threads - 1) / threads;
 
     softmax_grad_kernel<<<blocks, threads>>>(Y.data, X.data, size);

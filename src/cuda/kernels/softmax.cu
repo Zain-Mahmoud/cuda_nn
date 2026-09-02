@@ -28,7 +28,7 @@ __global__ void max_kernel(float *out, const float *in, int N) {
 
     __syncthreads();
 
-    // Parallel reduction.
+
     for (int stride = blockDim.x / 2; stride > 0; stride /= 2) {
 
         if (idx < stride) {

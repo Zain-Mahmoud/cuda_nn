@@ -86,8 +86,6 @@ void matmul_tiled_gpu(DeviceMatrix &out, DeviceMatrix& left, DeviceMatrix& right
 
 }
 
-
-
 void softmax_gpu(DeviceMatrix &X, DeviceMatrix &Y){
     assert(X.cols == 1);
     assert(Y.cols == 1);
@@ -130,7 +128,6 @@ void softmax_gpu(DeviceMatrix &X, DeviceMatrix &Y){
 
 void softmax_grad_gpu(DeviceMatrix &X, DeviceMatrix &Y){
     assert(X.cols == 1);
-    assert(Y.cols == X.cols && Y.rows = X.cols);
 
     int size = X.rows;
 

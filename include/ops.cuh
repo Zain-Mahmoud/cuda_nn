@@ -6,7 +6,7 @@ void relu_gpu(DeviceMatrix& X, DeviceMatrix& Y);
 void relu_grad_gpu(DeviceMatrix& X, DeviceMatrix& Y);
 
 void matmul_gpu(DeviceMatrix &out, DeviceMatrix& left, DeviceMatrix& right);
-void matmul_tiled_gpu(DeviceMatrix &out, DeviceMatrix& left, DeviceMatrix& right)
+void matmul_tiled_gpu(DeviceMatrix &out, DeviceMatrix& left, DeviceMatrix& right);
 
 void softmax_gpu(DeviceMatrix &X, DeviceMatrix &Y);
 void softmax_grad_gpu(DeviceMatrix &X, DeviceMatrix &Y);

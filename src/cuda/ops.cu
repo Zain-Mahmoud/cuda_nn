@@ -2,12 +2,25 @@
 #include <matmul.cuh>
 #include <softmax.cuh>
 #include <tanh.cuh>
+#include <gelu.cuh>
+#include <swish.cuh>
 #include <device_matrix.hpp>
 #include <iostream>
 #include <cmath>
 #include <cassert>
 
+
 using namespace std;
+
+int next_power_of_two(int N) {
+    int power = 1;
+
+    while (power < N) {
+        power *= 2;
+    }
+
+    return power;
+}
 
 void relu_gpu(DeviceMatrix& X, DeviceMatrix& Y){
     int matrix_size = X.cols * X.rows;
@@ -282,12 +295,3 @@ void siwsh_grad_gpu(DeviceMatrix& X, DeviceMatrix& Y){
     }
 }
 
-int next_power_of_two(int N) {
-    int power = 1;
-
-    while (power < N) {
-        power *= 2;
-    }
-
-    return power;
-}

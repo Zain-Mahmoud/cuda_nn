@@ -117,21 +117,24 @@ void softmax_gpu(DeviceMatrix &X, DeviceMatrix &Y){
 
     int threads = next_power_of_two(size);
 
-    cudaError_t err = max_kernel<<<1, threads>>>(d_max, X.data, size);
-
+    max_kernel<<<1, threads>>>(d_max, X.data, size);
+    cudaError_t err = cudaGetLastError();
     if (err != cudaSuccess){
         cerr << "CUDA softmax maximum kernel launch failed: "
         << cudaGetErrorString(err) << '\n';
     }
 
-    err = sum_kernel<<<1, threads>>>(d_sum, X.data, size, d_max);
+    sum_kernel<<<1, threads>>>(d_sum, X.data, size, d_max);
+
+    err = cudaGetLastError();
 
     if (err != cudaSuccess){
         cerr << "CUDA softmax sum kernel launch failed: "
         << cudaGetErrorString(err) << '\n';
     }
 
-    err = softmax_kernel<<<1, threads>>>(Y.data, X.data, size, d_max, d_sum);
+    softmax_kernel<<<1, threads>>>(Y.data, X.data, size, d_max, d_sum);
+    err = cudaGetLastError();
 
     if (err != cudaSuccess){
         cerr << "CUDA softmax calculation kernel launch failed: "
@@ -150,7 +153,8 @@ void softmax_grad_gpu(DeviceMatrix &X, DeviceMatrix &Y){
     int threads = 256;
     int blocks = (total + threads - 1) / threads
 
-    cudaError_t err = softmax_grad_kernel<<<blocks, threads>>>(Y.data, X.data, size);
+    softmax_grad_kernel<<<blocks, threads>>>(Y.data, X.data, size);
+    cudaError_t err = cudaGetLastError();
 
     if (err != cudaSuccess){
         cerr << "CUDA softmax grad calculation kernel launch failed: "

@@ -1,6 +1,7 @@
 #include <relu.cuh>
 #include <matmul.cuh>
 #include <softmax.cuh>
+#include <tanh.cuh>
 #include <device_matrix.hpp>
 #include <iostream>
 #include <cmath>
@@ -20,10 +21,28 @@ void relu_gpu(DeviceMatrix& X, DeviceMatrix& Y){
     cudaError_t err = cudaGetLastError();
 
     if (err != cudaSuccess){
-        cerr << "CUDA RELU Kernel launch failed: "
+        cerr << "CUDA RELU kernel launch failed: "
         << cudaGetErrorString(err) << '\n';
     }
 }
+
+void relu_grad_gpu(DeviceMatrix& X, DeviceMatrix& Y){
+    int matrix_size = X.cols * X.rows;
+    int total_threads = matrix_size;
+
+    int threads_per_block = 256;
+    int blocks_per_grid = (total_threads + threads_per_block - 1) / threads_per_block;
+
+    relu_grad_kernel<<<blocks_per_grid, threads_per_block>>>(Y.data, X.data, matrix_size);
+
+    cudaError_t err = cudaGetLastError();
+
+    if (err != cudaSuccess){
+        cerr << "CUDA RELU grad kernel launch failed: "
+        << cudaGetErrorString(err) << '\n';
+    }
+}
+
 
 void matmul_gpu(DeviceMatrix &out, DeviceMatrix& left, DeviceMatrix& right){
     assert(left.cols == right.rows);
@@ -61,7 +80,7 @@ void matmul_tiled_gpu(DeviceMatrix &out, DeviceMatrix& left, DeviceMatrix& right
     cudaError_t err = cudaGetLastError();
 
     if (err != cudaSuccess){
-        cerr << "CUDA tiled matmul Kernel launch failed: "
+        cerr << "CUDA tiled matmul kernel launch failed: "
         << cudaGetErrorString(err) << '\n';
     }
 
@@ -117,19 +136,159 @@ void softmax_gpu(DeviceMatrix &X, DeviceMatrix &Y){
     }
 }
 
-void relu_grad_gpu(DeviceMatrix& X, DeviceMatrix& Y){
+void softmax_grad_gpu(DeviceMatrix &X, DeviceMatrix &Y){
+    assert(X.cols == 1);
+    assert(Y.cols == X.cols && Y.rows = X.cols);
+
+    int size = X.rows;
+
+    if (size > BLOCKSIZE){
+        return;
+    }
+    int threads = 256;
+    int blocks = (total + threads - 1) / threads
+
+    cudaError_t err = softmax_grad_kernel<<<blocks, threads>>>(Y.data, X.data, size);
+
+    if (err != cudaSuccess){
+        cerr << "CUDA softmax grad calculation kernel launch failed: "
+        << cudaGetErrorString(err) << '\n';
+    }
+}
+
+
+void tanh_gpu(DeviceMatrix& X, DeviceMatrix& Y){
     int matrix_size = X.cols * X.rows;
     int total_threads = matrix_size;
 
     int threads_per_block = 256;
     int blocks_per_grid = (total_threads + threads_per_block - 1) / threads_per_block;
 
-    relu_grad_kernel<<<blocks_per_grid, threads_per_block>>>(Y.data, X.data, matrix_size);
+    tanh_kernel<<<blocks_per_grid, threads_per_block>>>(Y.data, X.data, matrix_size);
 
     cudaError_t err = cudaGetLastError();
 
     if (err != cudaSuccess){
-        cerr << "CUDA RELU Kernel launch failed: "
+        cerr << "CUDA tanh kernel launch failed: "
+        << cudaGetErrorString(err) << '\n';
+    }
+}
+
+void tanh_grad_gpu(DeviceMatrix& X, DeviceMatrix& Y){
+    int matrix_size = X.cols * X.rows;
+    int total_threads = matrix_size;
+
+    int threads_per_block = 256;
+    int blocks_per_grid = (total_threads + threads_per_block - 1) / threads_per_block;
+
+    tanh_grad_kernel<<<blocks_per_grid, threads_per_block>>>(Y.data, X.data, matrix_size);
+
+    cudaError_t err = cudaGetLastError();
+
+    if (err != cudaSuccess){
+        cerr << "CUDA tanh grad kernel launch failed: "
+        << cudaGetErrorString(err) << '\n';
+    }
+}
+
+void leaky_relu_gpu(DeviceMatrix& X, DeviceMatrix& Y, float alpha){
+    int matrix_size = X.cols * X.rows;
+    int total_threads = matrix_size;
+
+    int threads_per_block = 256;
+    int blocks_per_grid = (total_threads + threads_per_block - 1) / threads_per_block;
+
+    leaky_relu_kernel<<<blocks_per_grid, threads_per_block>>>(Y.data, X.data, matrix_size, alpha);
+
+    cudaError_t err = cudaGetLastError();
+
+    if (err != cudaSuccess){
+        cerr << "CUDA leaky RELU kernel launch failed: "
+        << cudaGetErrorString(err) << '\n';
+    }
+}
+
+void leaky_relu_grad_gpu(DeviceMatrix& X, DeviceMatrix& Y, float alpha){
+    int matrix_size = X.cols * X.rows;
+    int total_threads = matrix_size;
+
+    int threads_per_block = 256;
+    int blocks_per_grid = (total_threads + threads_per_block - 1) / threads_per_block;
+
+    leaky_relu_grad_kernel<<<blocks_per_grid, threads_per_block>>>(Y.data, X.data, matrix_size, alpha);
+
+    cudaError_t err = cudaGetLastError();
+
+    if (err != cudaSuccess){
+        cerr << "CUDA leaky RELU grad kernel launch failed: "
+        << cudaGetErrorString(err) << '\n';
+    }
+}
+
+void gelu_gpu(DeviceMatrix& X, DeviceMatrix& Y){
+    int matrix_size = X.cols * X.rows;
+    int total_threads = matrix_size;
+
+    int threads_per_block = 256;
+    int blocks_per_grid = (total_threads + threads_per_block - 1) / threads_per_block;
+
+    gelu_kernel<<<blocks_per_grid, threads_per_block>>>(Y.data, X.data, matrix_size);
+
+    cudaError_t err = cudaGetLastError();
+
+    if (err != cudaSuccess){
+        cerr << "CUDA GELU kernel launch failed: "
+        << cudaGetErrorString(err) << '\n';
+    }
+}
+
+void gelu_grad_gpu(DeviceMatrix& X, DeviceMatrix& Y){
+    int matrix_size = X.cols * X.rows;
+    int total_threads = matrix_size;
+
+    int threads_per_block = 256;
+    int blocks_per_grid = (total_threads + threads_per_block - 1) / threads_per_block;
+
+    gelu_grad_kernel<<<blocks_per_grid, threads_per_block>>>(Y.data, X.data, matrix_size);
+
+    cudaError_t err = cudaGetLastError();
+
+    if (err != cudaSuccess){
+        cerr << "CUDA GELU grad kernel launch failed: "
+        << cudaGetErrorString(err) << '\n';
+    }
+}
+
+void siwsh_gpu(DeviceMatrix& X, DeviceMatrix& Y){
+    int matrix_size = X.cols * X.rows;
+    int total_threads = matrix_size;
+
+    int threads_per_block = 256;
+    int blocks_per_grid = (total_threads + threads_per_block - 1) / threads_per_block;
+
+    swish_gpu<<<blocks_per_grid, threads_per_block>>>(Y.data, X.data, matrix_size);
+
+    cudaError_t err = cudaGetLastError();
+
+    if (err != cudaSuccess){
+        cerr << "CUDA swish kernel launch failed: "
+        << cudaGetErrorString(err) << '\n';
+    }
+}
+
+void siwsh_grad_gpu(DeviceMatrix& X, DeviceMatrix& Y){
+    int matrix_size = X.cols * X.rows;
+    int total_threads = matrix_size;
+
+    int threads_per_block = 256;
+    int blocks_per_grid = (total_threads + threads_per_block - 1) / threads_per_block;
+
+    swish_grad_kernel<<<blocks_per_grid, threads_per_block>>>(Y.data, X.data, matrix_size);
+
+    cudaError_t err = cudaGetLastError();
+
+    if (err != cudaSuccess){
+        cerr << "CUDA swish grad kernel launch failed: "
         << cudaGetErrorString(err) << '\n';
     }
 }

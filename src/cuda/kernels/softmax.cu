@@ -71,3 +71,20 @@ __global__ void sum_kernel(float *out, const float *in, int N, float *max) {
         *out = values[0];
     }
 }
+
+__global__ void softmax_grad_kernel(float *grad, float *y, int N) {
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+
+    if (idx >= N * N) {
+        return;
+    }
+
+    int i = idx / N;
+    int j = idx % N;
+
+    if (i == j) {
+        grad[i * N + j] = y[i] * (1.0f - y[i]);
+    } else {
+        grad[i * N + j] = -y[i] * y[j];
+    }
+}

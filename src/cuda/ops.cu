@@ -86,15 +86,7 @@ void matmul_tiled_gpu(DeviceMatrix &out, DeviceMatrix& left, DeviceMatrix& right
 
 }
 
-int next_power_of_two(int N) {
-    int power = 1;
 
-    while (power < N) {
-        power *= 2;
-    }
-
-    return power;
-}
 
 void softmax_gpu(DeviceMatrix &X, DeviceMatrix &Y){
     assert(X.cols == 1);
@@ -291,4 +283,14 @@ void siwsh_grad_gpu(DeviceMatrix& X, DeviceMatrix& Y){
         cerr << "CUDA swish grad kernel launch failed: "
         << cudaGetErrorString(err) << '\n';
     }
+}
+
+int next_power_of_two(int N) {
+    int power = 1;
+
+    while (power < N) {
+        power *= 2;
+    }
+
+    return power;
 }

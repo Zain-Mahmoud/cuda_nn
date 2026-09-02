@@ -268,7 +268,7 @@ void siwsh_gpu(DeviceMatrix& X, DeviceMatrix& Y){
     int threads_per_block = 256;
     int blocks_per_grid = (total_threads + threads_per_block - 1) / threads_per_block;
 
-    swish_gpu<<<blocks_per_grid, threads_per_block>>>(Y.data, X.data, matrix_size);
+    swish_kernel<<<blocks_per_grid, threads_per_block>>>(Y.data, X.data, matrix_size);
 
     cudaError_t err = cudaGetLastError();
 

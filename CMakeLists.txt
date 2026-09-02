@@ -24,12 +24,12 @@ add_executable(cuda_nn
     src/cuda/device_matrix.cu
     src/cuda/ops.cu
 
-    src/cuda/kernel/relu.cu
-    src/cuda/kernel/swish.cu
-    src/cuda/kernel/gelu.cu
-    src/cuda/kernel/softmax.cu
-    src/cuda/kernel/tanh.cu
-    src/cuda/kernel/matmul.cu
+    src/cuda/kernels/relu.cu
+    src/cuda/kernels/swish.cu
+    src/cuda/kernels/gelu.cu
+    src/cuda/kernels/softmax.cu
+    src/cuda/kernels/tanh.cu
+    src/cuda/kernels/matmul.cu
     
 )
 

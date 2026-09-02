@@ -1,7 +1,7 @@
 #include <gelu.cuh>
 #include <cmath>
 
-__global__ void gelu_kernel(float *out, const float *in, int N) {
+__global__ void gelu_kernel(float *out, float *in, int N) {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
 
     if (i >= N) {
@@ -21,7 +21,7 @@ __global__ void gelu_kernel(float *out, const float *in, int N) {
 }
 
 
-__global__ void gelu_grad_kernel(float *out, const float *in, int N) {
+__global__ void gelu_grad_kernel(float *out, float *in, int N) {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
 
     if (i >= N) {

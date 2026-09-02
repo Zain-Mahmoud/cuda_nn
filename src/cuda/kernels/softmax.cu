@@ -14,7 +14,7 @@ __global__ void softmax_kernel(float *out, float *in, int N, float *max, float *
     out[idx] = expf(in[idx] - vmax) / vsum;
 }
 
-__global__ void max_kernel(float *out, const float *in, int N) {
+__global__ void max_kernel(float *out, float *in, int N) {
     int idx = threadIdx.x;
 
     __shared__ float values[BLOCKSIZE];
@@ -44,7 +44,7 @@ __global__ void max_kernel(float *out, const float *in, int N) {
     }
 }
 
-__global__ void sum_kernel(float *out, const float *in, int N, float *max) {
+__global__ void sum_kernel(float *out, float *in, int N, float *max) {
     int idx = threadIdx.x;
     float vmax = *max;
 

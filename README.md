@@ -35,11 +35,7 @@ Each activation also includes its corresponding gradient.
 
 The softmax implementation uses the numerically stable formulation:
 
-$$
-\mathrm{softmax}(x_i)
-=
-\frac{e^{x_i-\max(x)}}{\sum_j e^{x_j-\max(x)}}
-$$
+$$\mathrm{softmax}(x_i) = \frac{e^{x_i-\max(x)}}{\sum_j e^{x_j-\max(x)}} $$
 
 Subtracting the maximum prevents large positive logits from causing exponential overflow.
 
@@ -81,12 +77,12 @@ cuda_nn/
 │   └── ops.cuh
 │
 └── src/
-    ├── main.cpp
     ├── matrix.cpp
     ├── linear.cpp
     ├── relu.cpp
     │
     └── cuda/
+        ├── main.cu
         ├── device_matrix.cu
         ├── ops.cu
         │

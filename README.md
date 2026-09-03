@@ -1,4 +1,4 @@
-# CUDA Neural Network
+# CUDA Deep Learning
 
 A from-scratch neural-network computation library written in **C++ and CUDA**, designed to explore GPU programming, CUDA kernel optimization, memory management, parallel reductions, and CPU/GPU performance differences.
 

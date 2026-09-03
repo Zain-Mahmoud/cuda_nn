@@ -94,7 +94,7 @@ cuda_deep_learning
 The project separates the public API, CUDA kernel declarations, kernel implementations, and higher-level GPU operation wrappers.
 
 ```text
-main.cpp
+main.cu
     │
     ▼
 ops.cuh

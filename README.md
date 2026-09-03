@@ -299,11 +299,7 @@ For arbitrary input sizes, the number of threads is rounded up to a power of two
 
 For a softmax output \(y\), the Jacobian is:
 
-$$
-J_{ij}
-=
-y_i(\delta_{ij}-y_j)
-$$
+$$J_{ij} = y_i(\delta_{ij}-y_j)$$
 
 where:
 

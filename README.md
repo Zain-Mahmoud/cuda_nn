@@ -60,39 +60,33 @@ The project demonstrates several fundamental CUDA concepts:
 ## Project Structure
 
 ```text
-cuda_nn/
-├── CMakeLists.txt
-├── README.md
-│
-├── include/
-│   ├── matrix.hpp
+cuda_deep_learning
+├── include
 │   ├── device_matrix.hpp
-│   ├── relu.hpp
-│   ├── relu.cuh
-│   ├── matmul.cuh
-│   ├── softmax.cuh
-│   ├── tanh.cuh
-│   ├── swish.cuh
 │   ├── gelu.cuh
-│   └── ops.cuh
-│
-└── src/
-    ├── matrix.cpp
-    ├── linear.cpp
-    ├── relu.cpp
-    │
-    └── cuda/
-        ├── main.cu
-        ├── device_matrix.cu
-        ├── ops.cu
-        │
-        └── kernels/
-            ├── relu.cu
-            ├── swish.cu
-            ├── gelu.cu
-            ├── softmax.cu
-            ├── tanh.cu
-            └── matmul.cu
+│   ├── matmul.cuh
+│   ├── matrix.hpp
+│   ├── ops.cuh
+│   ├── relu.cuh
+│   ├── softmax.cuh
+│   ├── swish.cuh
+│   └── tanh.cuh
+├── src
+│    ├── cpu
+│    │   └── matrix.cpp
+│    └── cuda
+│       ├── kernels
+│       │   ├── gelu.cu
+│       │   ├── matmul.cu
+│       │   ├── relu.cu
+│       │   ├── softmax.cu
+│       │   ├── swish.cu
+│       │   └── tanh.cu
+│       ├── device_matrix.cu
+│       ├── main.cu
+│       └── ops.cu
+├── README.md
+└── CMakeLists.txt
 ```
 
 ### Design

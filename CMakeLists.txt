@@ -16,10 +16,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CUDA_EXTENSIONS OFF)
 
 add_executable(cuda_nn
-    src/main.cpp
-    src/matrix.cpp
-    src/linear.cpp
-    src/relu.cpp
+    src/cuda/main.cu
+
+    src/cpu/matrix.cpp
 
     src/cuda/device_matrix.cu
     src/cuda/ops.cu

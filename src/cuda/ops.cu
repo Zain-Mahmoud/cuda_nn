@@ -141,28 +141,28 @@ void softmax_gpu(DeviceMatrix &X, DeviceMatrix &Y){
         << cudaGetErrorString(err) << '\n';
     }
 }
-
-void softmax_grad_gpu(DeviceMatrix &X, DeviceMatrix &Y){
+void softmax_grad_gpu(DeviceMatrix &X, DeviceMatrix &Y) {
     assert(X.cols == 1);
+    
+    int N = X.rows;
 
-    int size = X.rows;
-
-    if (size > BLOCKSIZE){
+    if (N > BLOCKSIZE) {
         return;
     }
+
     int threads = 256;
-    int total = size * size;
+    int total = N * N;
     int blocks = (total + threads - 1) / threads;
 
-    softmax_grad_kernel<<<blocks, threads>>>(Y.data, X.data, size);
+    softmax_grad_kernel<<<blocks, threads>>>(Y.data, X.data, N);
+
     cudaError_t err = cudaGetLastError();
 
-    if (err != cudaSuccess){
+    if (err != cudaSuccess) {
         cerr << "CUDA softmax grad calculation kernel launch failed: "
-        << cudaGetErrorString(err) << '\n';
+             << cudaGetErrorString(err) << '\n';
     }
 }
-
 
 void tanh_gpu(DeviceMatrix& X, DeviceMatrix& Y){
     int matrix_size = X.cols * X.rows;

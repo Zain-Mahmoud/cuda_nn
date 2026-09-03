@@ -6,8 +6,6 @@
 #include <chrono>
 #include <cassert>
 
-#include <cuda_runtime.h>
-
 #include <matrix.hpp>
 #include <device_matrix.hpp>
 #include <ops.cuh>
@@ -198,17 +196,14 @@ void cpu_softmax_grad(const Matrix& X, Matrix& Y) {
 
     int N = X.rows;
 
-    Matrix softmax(N, 1);
-    cpu_softmax(X, softmax);
-
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
 
             float delta = (i == j) ? 1.0f : 0.0f;
 
             Y.data[i * N + j] =
-                softmax.data[i] *
-                (delta - softmax.data[j]);
+                X.data[i] *
+                (delta - X.data[j]);
         }
     }
 }
@@ -542,9 +537,8 @@ int main() {
 
     DeviceMatrix dJ(softmax_N, softmax_N);
 
-    cpu_softmax_grad(SX, cpu_J);
-
-    softmax_grad_gpu(dSX, dJ);
+    cpu_softmax_grad(cpu_SY, cpu_J);
+    softmax_grad_gpu(dSY, dJ);
     cudaDeviceSynchronize();
 
     dJ.copy_to_host(gpu_J);
@@ -553,7 +547,6 @@ int main() {
         "Softmax Jacobian",
         compare_matrices(cpu_J, gpu_J, 1e-5f)
     );
-
     cout << "\n=== PERFORMANCE ===\n\n";
 
     int BENCH_R = 1024;

@@ -61,7 +61,7 @@ __global__ void sum_kernel(float *out, float *in, int N, float *max) {
     for (int stride = blockDim.x / 2; stride > 0; stride /= 2) {
 
         if (idx < stride) {
-            values[idx] += expf(values[idx + stride] - vmax);
+            values[idx] += values[idx + stride];
         }
 
         __syncthreads();
